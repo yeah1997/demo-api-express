@@ -2,13 +2,14 @@ const express = require('express')
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
-    res.send('hello world')
-})
+// user
+router.use(require('./user'))
+// profile
+router.use('/profiles', require('./profile'))
+// article
+router.use('/articles', require('./article'))
+// tag
+router.use('/tags', require('./tag'))
 
-router.post('/', (req, res) => {
-    console.log(req.body)
-    res.send('hello world')
-})
 
 module.exports = router
