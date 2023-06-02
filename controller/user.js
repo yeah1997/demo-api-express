@@ -1,5 +1,7 @@
+const { User } = require('../model')
+
 // user login
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
     try {
         res.send('post: /users/login')
     } catch (err) {
@@ -8,16 +10,26 @@ exports.login = async (req, res) => {
 }
 
 // user regiseter 
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
     try {
-        res.send('post: /users')
+        // res.body
+        console.log(req.body)
+        // check format
+        const user = new User(req.body.user)
+        // save to db
+        user.save()
+        // res
+        res.status(201).json({
+            message: "succeed",
+            user
+        })
     } catch (err) {
         next(err)
     }
 }
 
 // get user info
-exports.getCurrentUser = async (req, res) => {
+exports.getCurrentUser = async (req, res, next) => {
     try {
         res.send('get: /user')
     } catch (err) {
@@ -26,7 +38,7 @@ exports.getCurrentUser = async (req, res) => {
 }
 
 // update user info
-exports.updateCurrentUser = async (req, res) => {
+exports.updateCurrentUser = async (req, res, next) => {
     try {
         res.send('put: /user')
     } catch (err) {
