@@ -12,12 +12,14 @@ exports.login = async (req, res, next) => {
 // user regiseter 
 exports.register = async (req, res, next) => {
     try {
-        // res.body
-        console.log(req.body)
         // check format
-        const user = new User(req.body.user)
+        let user = new User(req.body.user)
         // save to db
-        user.save()
+        await user.save()
+        // toJson
+        user = user.toJSON()
+        // delete user.password
+        delete user.password
         // res
         res.status(201).json({
             message: "succeed",
