@@ -34,7 +34,7 @@ exports.login = [
     ]),
     validate([
         body('user.email').custom(async (email, { req }) => {
-            const user = await User.findOne({ email })
+            const user = await User.findOne({ email }).select(['email', 'username', 'bio', 'iamge', 'password'])
             if (!user) {
                 return Promise.reject('Email is not correct')
             }
@@ -43,6 +43,7 @@ exports.login = [
     ]),
     validate([
         body('user.password').custom(async (password, { req }) => {
+            console.log(req.user)
             if (md5(password) !== req.user.password) {
                 return Promise.reject('Password is not correct')
             }

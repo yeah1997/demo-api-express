@@ -7,7 +7,7 @@ const userValidator = require('../validator/user')
 const router = express.Router()
 
 // user login
-router.post('/users/login', userCtrl.login)
+router.post('/users/login', userValidator.login, userCtrl.login)
 
 // user register
 router.post('/users', userValidator.register, userCtrl.register)
