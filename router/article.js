@@ -1,6 +1,7 @@
 const express = require('express')
 const articleCtrl = require('../controller/article')
 const router = express.Router()
+const auth = require('../middleware/auth')
 
 // get articles
 router.get('/', articleCtrl.getArticles)
@@ -12,7 +13,7 @@ router.get('/feed', articleCtrl.getFeedArticles)
 router.get('/:articleId', articleCtrl.getArticle)
 
 // create article
-router.post('/', articleCtrl.createArticle)
+router.post('/', auth, articleCtrl.createArticle)
 
 // update article
 router.put('/:articleId', articleCtrl.updateArticle)
