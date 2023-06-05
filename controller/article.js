@@ -1,7 +1,15 @@
+const { Article } = require('../model')
+
 // get article list
 exports.getArticles = async (req, res, next) => {
     try {
-        res.send('getArticles')
+        const articles = await Article.find()
+        const articlesCount = await Article.countDocuments()
+
+        res.status(200).json({
+            articles,
+            articlesCount
+        })
     } catch (err) {
         next(err)
     }
@@ -19,7 +27,14 @@ exports.getFeedArticles = async (req, res, next) => {
 // get article
 exports.getArticle = async (req, res, next) => {
     try {
-        res.send('getArticle')
+        const article = await Article.findById(req.params.articleId).populate('author')
+        if (!article) {
+            return res.status(404).end()
+        }
+        console.log("article")
+        res.status(200).json({
+            article
+        })
     } catch (err) {
         next(err)
     }
@@ -28,8 +43,14 @@ exports.getArticle = async (req, res, next) => {
 // create article
 exports.createArticle = async (req, res, next) => {
     try {
-        // 处理请求
-        res.send('createArticle')
+        const article = new Article(req.body.article)
+        article.author = req.user._id
+        article.populate('author').execPopulate()
+        await article.save()
+
+        res.status(201).json({
+            article
+        })
     } catch (err) {
         next(err)
     }

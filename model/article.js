@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
+const baseModel = require('./base-model')
 const Schema = mongoose.Schema
 
 const articleSchema = new mongoose.Schema({
-
+    ...baseModel,
     title: {
         type: String,
         required: true

@@ -8,7 +8,9 @@ exports.login = async (req, res, next) => {
         const user = req.user.toJSON()
         const token = await jwt.sign({
             userId: user._id
-        }, jwtSecret)
+        }, jwtSecret, {
+            expiresIn: 60 * 60
+        })
 
         delete user.password
 
