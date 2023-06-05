@@ -54,7 +54,6 @@ exports.getArticle = async (req, res, next) => {
         if (!article) {
             return res.status(404).end()
         }
-        console.log("article")
         res.status(200).json({
             article
         })
@@ -82,7 +81,19 @@ exports.createArticle = async (req, res, next) => {
 // update article
 exports.updateArticle = async (req, res, next) => {
     try {
-        res.send('updateArticle')
+        const article = req.article
+        const bodyArticle = req.body.article
+        console.log(201)
+        console.log(bodyArticle.title)
+
+        article.title = bodyArticle.title || article.title
+        article.description = bodyArticle.description || article.description
+        article.body = bodyArticle.body || article.body
+
+        await article.save()
+        res.status(201).json({
+            article
+        })
     } catch (err) {
         next(err)
     }
