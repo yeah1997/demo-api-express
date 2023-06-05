@@ -1,11 +1,34 @@
-const { Article } = require('../model')
+const { Article, User } = require('../model')
 
 // get article list
 exports.getArticles = async (req, res, next) => {
     try {
-        const articles = await Article.find()
-        const articlesCount = await Article.countDocuments()
+        const {
+            limit = 20,
+            offset = 0,
+            tag,
+            author,
+            favorited
+        } = req.query
+        const filter = {}
 
+        if (tag) {
+            filter.tagList = tag
+        }
+
+        if (author) {
+            const user = await User.findOne({ username: author })
+            filter.author = user ? user._id : null
+        }
+
+        const articles = await Article.find(filter)
+            .skip(Number.parseInt(offset))
+            .limit(Number.parseInt(limit))
+            .sort({
+                createdAt: -1
+            })
+
+        const articlesCount = await Article.countDocuments()
         res.status(200).json({
             articles,
             articlesCount
