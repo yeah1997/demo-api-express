@@ -8,11 +8,10 @@ exports.createArticle = validate([
     body('article.body').notEmpty().withMessage("Body of article can't be empty")
 ])
 
-
 exports.getArticle = validate([
-    param('articleId').custom(async value => {
-        if (!mongoose.isValidObjectId(value)) {
-            return Promise.reject('Article ID is not correct')
-        }
-    })
+    validate.isValidObjectId(['params'], 'articleId')
+])
+
+exports.updateArticle = validate([
+    validate.isValidObjectId(['params'], 'articleId')
 ])
