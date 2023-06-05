@@ -20,7 +20,7 @@ router.post('/', auth, articleValidator.createArticle, articleCtrl.createArticle
 router.put('/:articleId', auth, articleValidator.updateArticle, articleCtrl.updateArticle)
 
 // delete article
-router.delete('/:articleId', articleCtrl.deleteArticle)
+router.delete('/:articleId', auth, articleValidator.deleteArticle, articleCtrl.deleteArticle)
 
 // add article comment
 router.post('/:articleId/comments', articleCtrl.createArticleComment)
